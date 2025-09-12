@@ -9,15 +9,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jegatheeswaran.task.R
-import com.jegatheeswaran.task.ui.screens.home.HomeScreen
+import com.jegatheeswaran.task.ui.screens.holding.HoldingMainScreen
+import com.jegatheeswaran.task.ui.screens.holding.PositionScreen
 
 @Composable
-fun Navigation(
+fun NavGraph(
     navController: NavHostController
 ) {
-    NavHost(navController, startDestination = ScreenName.Portfolio.route) {
-        composable(ScreenName.Portfolio.route) {
-            HomeScreen()
+    NavHost(navController, startDestination = ScreenName.Holding.route) {
+        composable (ScreenName.Position.route){
+            PositionScreen()
+        }
+        composable(ScreenName.Holding.route){
+            HoldingMainScreen()
         }
     }
 }

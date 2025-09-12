@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.constraintlayout.compose)
 
 
     implementation(libs.hilt.android)
@@ -97,5 +98,11 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.androidx.paging.compose)
+
+    // Room database
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
 
 }

@@ -34,20 +34,17 @@ class HoldingMainViewModel @Inject constructor(
                 }
                 .collect { result ->
                     when (result) {
-
                         is ApiResponseState.Success -> {
                             _uiState.value = _uiState.value.copy(
                                 holdingResults = result.data
                             )
                         }
-
                         is ApiResponseState.Error -> {
                             _uiState.value = _uiState.value.copy(
                                 isLoading = false,
                                 error = result.exception
                             )
                         }
-
                         is ApiResponseState.Loading -> {
                             _uiState.value = _uiState.value.copy(isLoading = true)
                         }

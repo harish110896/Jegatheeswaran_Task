@@ -16,7 +16,7 @@ fun BottomBarLayout(navController: NavController) {
         val items = listOf(
             ScreenName.Watchlist,
             ScreenName.Orders,
-            ScreenName.Position,
+            ScreenName.Portfolio,
             ScreenName.Funds,
             ScreenName.Invest
         )

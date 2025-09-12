@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Jegatheeswaran Task</string>
-    <string name="portfolio">Portfolio\n</string>
-    <string name="portfolio_tab">Portfolio\n</string>
-    <string name="holding_tab">Holding\n</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="portfolio_tab">Portfolio</string>
+    <string name="holding_tab">HOLDING</string>
     <string name="feature_not_available">Feature not available</string>
+    <string name="positions_tab">POSITIONS</string>
+    <string name="watch_list">Watchlist</string>
+    <string name="orders">Orders</string>
+    <string name="funds">Funds</string>
+    <string name="invest">invest</string>
 </resources>

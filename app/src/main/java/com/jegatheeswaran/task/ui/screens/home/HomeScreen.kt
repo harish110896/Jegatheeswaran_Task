@@ -1,11 +1,14 @@
 package com.jegatheeswaran.task.ui.screens.home
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -14,20 +17,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.jegatheeswaran.task.R
+import com.jegatheeswaran.task.navigation.NavGraph
 import com.jegatheeswaran.task.navigation.ScreenName
 import com.jegatheeswaran.task.ui.screens.BottomBarLayout
 import com.jegatheeswaran.task.ui.screens.CustomTopBar
+import com.jegatheeswaran.task.ui.screens.TabLayout
 import com.jegatheeswaran.task.ui.screens.holding.HoldingMainViewModel
+import com.jegatheeswaran.task.ui.theme.Gray40
 import com.jegatheeswaran.task.utils.HOLDING_TAB
 import com.jegatheeswaran.task.utils.POSITION_TAB
+import com.jegatheeswaran.task.utils.TAB_COUNT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,60 +42,16 @@ fun HomeScreen() {
     val viewModel = hiltViewModel<HoldingMainViewModel>()
     val navController = rememberNavController()
     val isAppBarVisible = remember { mutableStateOf(true) }
-    val pagerState = rememberPagerState { HOLDING_TAB }
-    val context = LocalContext.current
+    val pagerState = rememberPagerState(initialPage = HOLDING_TAB) { TAB_COUNT }
     Scaffold(
         topBar = {
             if (!isAppBarVisible.value) {
                 SearchLayout(isAppBarVisible, viewModel, pagerState.currentPage)
             } else {
-//                TopAppBar(
-//                    colors = TopAppBarDefaults.topAppBarColors(
-//                        containerColor = Blue40,
-//                        titleContentColor = Color.White,
-//                    ),
-//                    title = {
-//                        Text(
-//                            text = navigationTitle(navController),
-//                            maxLines = 1,
-//                            overflow = TextOverflow.Ellipsis,
-//                            color = Color.White
-//                        )
-//                    },
-//                    navigationIcon = {
-//                        IconButton(onClick = {
-//                            Toast.makeText(
-//                                context,
-//                                context.getString(R.string.feature_not_available),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }) {
-//                            Icon(
-//                                Icons.AutoMirrored.Filled.ArrowBack,
-//                                contentDescription = null,
-//                                tint = Color.White
-//                            )
-//                        }
-//                    },
-//                    actions = {
-//                        IconButton(onClick = {
-//                            Toast.makeText(
-//                                context,
-//                                context.getString(R.string.feature_not_available),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }) {
-//                            Icon(
-//                                Icons.Filled.Search,
-//                                contentDescription = null,
-//                                tint = Color.Gray
-//                            )
-//                        }
-//                    }
-//                )
-                CustomTopBar(stringResource(R.string.portfolio),
+                CustomTopBar(
+                    stringResource(R.string.portfolio),
                     onLeftIconClick = {
-                        Toast.makeText(context,"Not available", Toast.LENGTH_SHORT).show()
+
                     },
                     onRightIcon1Click = {}
                 ) {
@@ -107,23 +69,18 @@ fun HomeScreen() {
                 .padding(padding)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(color = Color.White)
+                .background(color = Gray40)
         ) {
-//            MainView(
-//                navController = navController,
-//                pagerState = pagerState,
-//                genres = uiState.genres?.genres,
-//                isFavorite = isFavoriteActive.value
-//            )
+            MainView(
+                navController = navController,
+                pagerState = pagerState
+            )
 //            CircularIndeterminateProgressBar(isDisplayed = uiState.isLoading, 0.1f)
 
             if (!isAppBarVisible.value) {
                 val results = when (pagerState.currentPage) {
                     POSITION_TAB -> {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.feature_not_available), Toast.LENGTH_SHORT
-                        ).show()
+
                     }
 
                     HOLDING_TAB -> {
@@ -141,6 +98,27 @@ fun HomeScreen() {
         }
     }
 
+}
+
+@Composable
+fun MainView(
+    navController: NavHostController,
+    pagerState: PagerState
+) {
+    //todo handle back
+//    BackHandler(enabled = currentRoute in backDialogRoutes) {
+//        openDialog.value = true
+//    }
+    Column {
+        TabLayout(navController, pagerState)
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.fillMaxSize(),
+            userScrollEnabled = false
+        ) {
+            NavGraph(navController)
+        }
+    }
 }
 
 @Composable

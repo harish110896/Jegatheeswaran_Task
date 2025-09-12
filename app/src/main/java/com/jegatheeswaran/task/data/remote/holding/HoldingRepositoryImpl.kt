@@ -18,8 +18,8 @@ class HoldingRepositoryImpl @Inject constructor(
     override suspend fun fetchHoldingList(): Flow<ApiResponseState<List<HoldingDto>>> = flow {
         emit(ApiResponseState.Loading)
         try {
-            val genreResult = holdingApiService.fetchHoldings()
-            emit(ApiResponseState.Success(genreResult.data.userHolding))
+            val result = holdingApiService.fetchHoldings()
+            emit(ApiResponseState.Success(result.data.userHolding))
         } catch (e: Exception) {
             emit(ApiResponseState.Error(e))
         }
