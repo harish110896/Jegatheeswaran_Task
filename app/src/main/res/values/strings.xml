@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Jegatheeswaran Task</string>
+    <string name="portfolio">Portfolio\n</string>
+    <string name="portfolio_tab">Portfolio\n</string>
+    <string name="holding_tab">Holding\n</string>
+    <string name="feature_not_available">Feature not available</string>
 </resources>

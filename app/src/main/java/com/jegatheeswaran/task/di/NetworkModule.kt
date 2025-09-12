@@ -1,52 +1,86 @@
 package com.jegatheeswaran.task.di
 
-import com.jegatheeswaran.task.data.remote.HoldingApi
+import com.jegatheeswaran.task.data.remote.ApiConfiguration
+import com.jegatheeswaran.task.data.remote.ApiConfiguration.TIMEOUT_IN_SECONDS
+import com.jegatheeswaran.task.data.remote.holding.HoldingApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    const val BASE_URL = "https://35dee773a9ec441e9f38d5fc249406ce.api.mockbin.io/"
-
-    @Provides
+    /**
+     * Provides BaseUrl as string
+     */
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
-        val builder = OkHttpClient.Builder()
-//        if (BuildConfig.DEBUG) {
-//            val logging = HttpLoggingInterceptor().apply {
-//                level = HttpLoggingInterceptor.Level.BODY
-//            }
-//            builder.addInterceptor(logging)
-//        }
-        return builder.build()
+    @Provides
+    fun provideBaseURL(): String {
+        return ApiConfiguration.BASE_URL
     }
 
-    @Provides
+    /**
+     * Provides LoggingInterceptor for api information
+     */
     @Singleton
-    fun provideRetrofit(client: OkHttpClient): Retrofit {
-        val json = Json {
-            ignoreUnknownKeys = true
-        }
+    @Provides
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
+
+    /**
+     * Provides custom OkkHttp
+     */
+    @Singleton
+    @Provides
+    fun provideOkHttpClient(
+        loggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient {
+        val okHttpClient = OkHttpClient().newBuilder()
+
+        okHttpClient.callTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        okHttpClient.connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        okHttpClient.readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        okHttpClient.writeTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
+        okHttpClient.addInterceptor(loggingInterceptor)
+//        okHttpClient.addInterceptor(apiKeyInterceptor)
+        okHttpClient.build()
+        return okHttpClient.build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideConverterFactory(): Converter.Factory {
+        return GsonConverterFactory.create()
+    }
+
+    @Singleton
+    @Provides
+    fun provideRetrofitClient(
+        baseUrl: String,
+        okHttpClient: OkHttpClient,
+        converterFactory: Converter.Factory,
+    ): Retrofit {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+            .baseUrl(baseUrl)
+            .client(okHttpClient)
+            .addConverterFactory(converterFactory)
             .build()
     }
 
-    @Provides
     @Singleton
-    fun provideHoldingsApi(retrofit: Retrofit): HoldingApi =
-        retrofit.create(HoldingApi::class.java)
+    @Provides
+    fun provideRestApiService(retrofit: Retrofit): HoldingApiService {
+        return retrofit.create(HoldingApiService::class.java)
+    }
 }

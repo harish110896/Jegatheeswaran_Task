@@ -1,21 +1,23 @@
 package com.jegatheeswaran.task.data.model
 
-import com.jegatheeswaran.task.data.local.HoldingEntity
-import kotlinx.serialization.Serializable
-
-@Serializable
+import com.google.gson.annotations.SerializedName
 data class HoldingDto(
+    @SerializedName("symbol")
     val symbol: String,
+    @SerializedName("quantity")
     val quantity: Int,
+    @SerializedName("ltp")
     val ltp: Double,
+    @SerializedName("avgPrice")
     val avgPrice: Double,
+    @SerializedName("close")
     val close: Double
 )
 
-fun HoldingDto.toEntity() = HoldingEntity(
-    symbol = symbol,
-    quantity = quantity,
-    ltp = ltp,
-    avgPrice = avgPrice,
-    close = close
-)
+//fun HoldingDto.toEntity() = HoldingEntity(
+//    symbol = symbol,
+//    quantity = quantity,
+//    ltp = ltp,
+//    avgPrice = avgPrice,
+//    close = close
+//)
