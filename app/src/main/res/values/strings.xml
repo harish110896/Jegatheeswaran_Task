@@ -9,4 +9,7 @@
     <string name="orders">Orders</string>
     <string name="funds">Funds</string>
     <string name="invest">invest</string>
+    <string name="net_qty_header">"NET QTY : "</string>
+    <string name="ltp">"LTP : "</string>
+    <string name="pnl"><![CDATA["P&L : "]]></string>
 </resources>

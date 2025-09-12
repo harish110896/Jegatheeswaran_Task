@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.jegatheeswaran.task.R
 import com.jegatheeswaran.task.ui.theme.Blue40
 
 @Composable
@@ -42,7 +44,7 @@ fun CustomTopBar(
                 bottom.linkTo(parent.bottom)
             }) {
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                painterResource(R.drawable.user_24px),
                 contentDescription = "Left Icon",
                 tint = Color.White
             )
@@ -67,7 +69,7 @@ fun CustomTopBar(
                 bottom.linkTo(parent.bottom)
             }) {
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                painterResource(R.drawable.swap_24px),
                 contentDescription = "Right Icon 2",
                 tint = Color.White
             )
@@ -79,7 +81,7 @@ fun CustomTopBar(
                 bottom.linkTo(parent.bottom)
             }) {
             Icon(
-                Icons.AutoMirrored.Filled.ArrowBack,
+                painterResource(R.drawable.search_24px),
                 contentDescription = "Right Icon 1",
                 tint = Color.White
             )

@@ -1,6 +1,8 @@
 package com.jegatheeswaran.task.utils
 
+import android.annotation.SuppressLint
 import androidx.navigation.NavController
+import kotlin.math.absoluteValue
 
 fun NavController.singleTopNavigator(route: String) {
     this.navigate(route) {
@@ -12,4 +14,15 @@ fun NavController.singleTopNavigator(route: String) {
         launchSingleTop = true
         restoreState = true
     }
+}
+
+@SuppressLint("DefaultLocale")
+fun Double.toRupeeString(): String {
+    return String.format("\u20B9 %.2f", this)
+}
+
+@SuppressLint("DefaultLocale")
+fun Double.toSignedRupeeString(isProfit: Boolean): String {
+    val formatted = String.format("%.2f", this.absoluteValue)
+    return if (isProfit) "\u20B9 $formatted" else "-\u20B9 $formatted"
 }

@@ -18,6 +18,8 @@ val Teal60 = Color(0xFF76AB99)//PNL Green  color #76ab99
 val Rose50 = Color(0xFFB35869) //PNL Red color #b35869
 val Gray70 = Color(0xFFB0B0B0) //netqty, ltp, pnl header color #b0b0b0
 val Gray75 = Color(0xFFBCBCBC)//holding below divider color #bcbcbc
+val Gray48 = Color(0xFF585858)//netqty, ltp, pnl value color #585858
+
 val Gray50 = Color(0xFF6B6B6B)//bottombar text not selected color #6b6b6b
 val Gray90 = Color(0xFFE6E6E6)//bottombar backgroudn color #e6e6e6
 val Gray95 = Color(0xFFF5F5F5)//collapsable view background color #f5f5f5

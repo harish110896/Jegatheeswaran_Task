@@ -1,6 +1,8 @@
 package com.jegatheeswaran.task.data.model
 
 import com.google.gson.annotations.SerializedName
+import com.jegatheeswaran.task.utils.toSignedRupeeString
+
 data class HoldingDto(
     @SerializedName("symbol")
     val symbol: String,
@@ -21,3 +23,10 @@ data class HoldingDto(
 //    avgPrice = avgPrice,
 //    close = close
 //)
+
+fun HoldingDto.calculatePnl() : Pair<String, Boolean>{
+    val pnl = (ltp * quantity) - (close * quantity)
+    val isProfit = pnl >= 0
+    val pnlDisplayString = pnl.toSignedRupeeString(isProfit)
+    return Pair(pnlDisplayString, isProfit)
+}

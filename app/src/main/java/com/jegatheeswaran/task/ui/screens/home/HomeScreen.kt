@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -69,7 +70,7 @@ fun HomeScreen() {
                 .padding(padding)
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .background(color = Gray40)
+                .background(Color.White)
         ) {
             MainView(
                 navController = navController,
@@ -109,7 +110,7 @@ fun MainView(
 //    BackHandler(enabled = currentRoute in backDialogRoutes) {
 //        openDialog.value = true
 //    }
-    Column {
+    Column(modifier = Modifier.background(color = Color.White)) {
         TabLayout(navController, pagerState)
         HorizontalPager(
             state = pagerState,

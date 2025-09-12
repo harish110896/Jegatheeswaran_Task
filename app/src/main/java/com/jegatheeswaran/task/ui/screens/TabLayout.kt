@@ -18,8 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jegatheeswaran.task.R
 import com.jegatheeswaran.task.navigation.ScreenName
-import com.jegatheeswaran.task.ui.theme.Blue40
-import com.jegatheeswaran.task.ui.theme.Gray50
+import com.jegatheeswaran.task.ui.theme.Gray40
+import com.jegatheeswaran.task.ui.theme.Gray60
+import com.jegatheeswaran.task.ui.theme.Gray75
 import com.jegatheeswaran.task.utils.HOLDING_TAB
 import com.jegatheeswaran.task.utils.POSITION_TAB
 import com.jegatheeswaran.task.utils.singleTopNavigator
@@ -33,14 +34,15 @@ fun TabLayout(
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(stringResource(R.string.positions_tab), stringResource(R.string.holding_tab))
     TabRow(
-        modifier = Modifier.background(Gray50),
+        modifier = Modifier.background(Color.White),
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(
                 Modifier
                     .padding(bottom = 6.dp)
+                    .height(1.dp)
                     .tabIndicatorOffset(tabPositions[pagerState.currentPage]),
-                color = Blue40
+                color = Gray75
             )
         }) {
         tabs.forEachIndexed { index, title ->
@@ -64,7 +66,7 @@ fun TabLayout(
                 text = {
                     Text(
                         text = title,
-                        color = if (pagerState.currentPage == index) Blue40 else Color.Black
+                        color = if (pagerState.currentPage == index) Gray40 else Gray60
                     )
                 })
         }
