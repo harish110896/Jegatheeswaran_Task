@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.jegatheeswaran.task.R
-import com.jegatheeswaran.task.ui.screens.holding.HoldingMainScreen
-import com.jegatheeswaran.task.ui.screens.holding.PositionScreen
+import com.jegatheeswaran.task.ui.screens.portfolio.HoldingMainScreen
+import com.jegatheeswaran.task.ui.screens.portfolio.PositionScreen
 
 @Composable
 fun NavGraph(

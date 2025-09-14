@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.ui.screens.holding
+package com.jegatheeswaran.task.ui.screens.portfolio
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +32,9 @@ class HoldingMainViewModel @Inject constructor(
                 }
                 .catch { exception ->
                     _uiState.value = _uiState.value.copy(isLoading = false, error = exception)
+                }
+                .onCompletion {
+                    _uiState.value = _uiState.value.copy(isLoading = false, error = null)
                 }
                 .collect { result ->
                     when (result) {

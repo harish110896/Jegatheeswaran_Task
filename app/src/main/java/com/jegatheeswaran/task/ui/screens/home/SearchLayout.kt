@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -26,7 +25,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.unit.dp
-import com.jegatheeswaran.task.ui.screens.holding.HoldingMainViewModel
+import com.jegatheeswaran.task.ui.screens.portfolio.HoldingMainViewModel
 import com.jegatheeswaran.task.utils.HOLDING_TAB
 import com.jegatheeswaran.task.utils.POSITION_TAB
 import kotlinx.coroutines.ExperimentalCoroutinesApi

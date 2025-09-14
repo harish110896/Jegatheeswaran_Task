@@ -1,11 +1,13 @@
 package com.jegatheeswaran.task.ui.screens.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -13,12 +15,16 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -27,11 +33,11 @@ import androidx.navigation.compose.rememberNavController
 import com.jegatheeswaran.task.R
 import com.jegatheeswaran.task.navigation.NavGraph
 import com.jegatheeswaran.task.navigation.ScreenName
-import com.jegatheeswaran.task.ui.screens.BottomBarLayout
-import com.jegatheeswaran.task.ui.screens.CustomTopBar
-import com.jegatheeswaran.task.ui.screens.TabLayout
-import com.jegatheeswaran.task.ui.screens.holding.HoldingMainViewModel
-import com.jegatheeswaran.task.ui.theme.Gray40
+import com.jegatheeswaran.task.ui.common.CustomTopBar
+import com.jegatheeswaran.task.ui.screens.portfolio.HoldingMainViewModel
+import com.jegatheeswaran.task.ui.screens.portfolio.PortfolioSummaryLayout
+import com.jegatheeswaran.task.ui.screens.portfolio.TabLayout
+import com.jegatheeswaran.task.ui.theme.Blue40
 import com.jegatheeswaran.task.utils.HOLDING_TAB
 import com.jegatheeswaran.task.utils.POSITION_TAB
 import com.jegatheeswaran.task.utils.TAB_COUNT
@@ -50,7 +56,7 @@ fun HomeScreen() {
                 SearchLayout(isAppBarVisible, viewModel, pagerState.currentPage)
             } else {
                 CustomTopBar(
-                    stringResource(R.string.portfolio),
+                    navigationTitle(navController),
                     onLeftIconClick = {
 
                     },
@@ -68,6 +74,7 @@ fun HomeScreen() {
         Box(
             Modifier
                 .padding(padding)
+                .padding(top = 0.dp)
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .background(Color.White)
@@ -76,8 +83,6 @@ fun HomeScreen() {
                 navController = navController,
                 pagerState = pagerState
             )
-//            CircularIndeterminateProgressBar(isDisplayed = uiState.isLoading, 0.1f)
-
             if (!isAppBarVisible.value) {
                 val results = when (pagerState.currentPage) {
                     POSITION_TAB -> {
@@ -106,18 +111,53 @@ fun MainView(
     navController: NavHostController,
     pagerState: PagerState
 ) {
+    val viewModel = hiltViewModel<HoldingMainViewModel>()
+    val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.loadHolding()
+    }
     //todo handle back
-//    BackHandler(enabled = currentRoute in backDialogRoutes) {
-//        openDialog.value = true
-//    }
-    Column(modifier = Modifier.background(color = Color.White)) {
-        TabLayout(navController, pagerState)
+    BackHandler(enabled = true) {
+
+    }
+
+    ConstraintLayout(modifier = Modifier
+        .fillMaxWidth()
+        .background(color = Color.White)) {
+        val (tabLayout, pager, bottomLayout) = createRefs()
+        TabLayout(navController, pagerState, modifier = Modifier
+            .constrainAs(tabLayout) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+            }
+            .fillMaxWidth())
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .constrainAs(pager) {
+                    top.linkTo(tabLayout.bottom)
+                    start.linkTo(parent.start)
+                },
             userScrollEnabled = false
         ) {
             NavGraph(navController)
+        }
+//        Column(modifier = Modifier.fillMaxWidth().height(48.dp).background(Blue40.copy(alpha = 0.20f)).constrainAs(bottomLayout){
+//            bottom.linkTo(parent.bottom)
+//            start.linkTo(parent.start)
+//        }) {
+//
+//        }
+        Box(
+            Modifier
+                .padding(top = 0.dp)
+                .constrainAs(bottomLayout) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                }
+        ) {
+            PortfolioSummaryLayout(items = uiState.holdingResults)
         }
     }
 }

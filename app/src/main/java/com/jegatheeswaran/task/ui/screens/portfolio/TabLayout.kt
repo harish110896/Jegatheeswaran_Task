@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.ui.screens
+package com.jegatheeswaran.task.ui.screens.portfolio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.height
@@ -30,11 +30,12 @@ import kotlinx.coroutines.launch
 fun TabLayout(
     navigator: NavHostController,
     pagerState: PagerState,
+    modifier: Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(stringResource(R.string.positions_tab), stringResource(R.string.holding_tab))
     TabRow(
-        modifier = Modifier.background(Color.White),
+        modifier = modifier.background(Color.White),
         selectedTabIndex = pagerState.currentPage,
         indicator = { tabPositions ->
             TabRowDefaults.SecondaryIndicator(

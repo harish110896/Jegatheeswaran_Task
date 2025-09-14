@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.ui.screens.holding
+package com.jegatheeswaran.task.ui.screens.portfolio
 
 import com.jegatheeswaran.task.data.model.HoldingDto
 

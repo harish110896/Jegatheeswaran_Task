@@ -26,7 +26,38 @@ data class HoldingDto(
 
 fun HoldingDto.calculatePnl() : Pair<String, Boolean>{
     val pnl = (ltp * quantity) - (close * quantity)
-    val isProfit = pnl >= 0
-    val pnlDisplayString = pnl.toSignedRupeeString(isProfit)
-    return Pair(pnlDisplayString, isProfit)
+    val positive = pnl >= 0
+    val displayString = pnl.toSignedRupeeString(positive)
+    return Pair(displayString, positive)
+}
+
+fun List<HoldingDto>.calculateCurrentValue() : Pair<String, Boolean>{
+    val currentValue: Double = this.sumOf { it.ltp * it.quantity }
+    val positive = currentValue >= 0
+    val displayString = currentValue.toSignedRupeeString(positive)
+    return Pair(displayString, positive)
+}
+
+fun List<HoldingDto>.calculateTotalInvestment() : Pair<String, Boolean>{
+    val totalInvestment: Double = this.sumOf { it.avgPrice * it.quantity }
+    val positive = totalInvestment >= 0
+    val displayString = totalInvestment.toSignedRupeeString(positive)
+    return Pair(displayString, positive)
+}
+
+
+fun List<HoldingDto>.calculateTotalPnl() : Pair<String, Boolean>{
+    val currentValue: Double = this.sumOf { it.ltp * it.quantity }
+    val totalInvestment: Double = this.sumOf { it.avgPrice * it.quantity }
+    val totalPnl: Double = currentValue - totalInvestment
+    val positive = totalPnl >= 0
+    val displayString = totalPnl.toSignedRupeeString(positive)
+    return Pair(displayString, positive)
+}
+
+fun List<HoldingDto>.calculateTodayPnl() : Pair<String, Boolean>{
+    val todayPnl: Double =  this.sumOf { (it.close - it.ltp) * it.quantity }
+    val positive = todayPnl >= 0
+    val displayString = todayPnl.toSignedRupeeString(positive)
+    return Pair(displayString, positive)
 }

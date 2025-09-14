@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.ui.screens.holding
+package com.jegatheeswaran.task.ui.screens.portfolio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,10 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextDecoration
 import com.jegatheeswaran.task.ui.theme.Blue40
-import com.jegatheeswaran.task.ui.theme.Rose50
-import com.jegatheeswaran.task.ui.theme.Teal60
 
 @Composable
 fun PositionScreen (){

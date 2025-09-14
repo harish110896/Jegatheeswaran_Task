@@ -22,7 +22,11 @@ fun Double.toRupeeString(): String {
 }
 
 @SuppressLint("DefaultLocale")
-fun Double.toSignedRupeeString(isProfit: Boolean): String {
+fun Double.toSignedRupeeString(positive: Boolean): String {
     val formatted = String.format("%.2f", this.absoluteValue)
-    return if (isProfit) "\u20B9 $formatted" else "-\u20B9 $formatted"
+    return if (positive) "\u20B9 $formatted" else "-\u20B9 $formatted"
+}
+
+fun String.withAsterisk(): String {
+    return "$this*"
 }

@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.ui.screens.holding
+package com.jegatheeswaran.task.ui.screens.portfolio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -20,11 +20,11 @@ import androidx.constraintlayout.compose.Dimension
 import com.jegatheeswaran.task.R
 import com.jegatheeswaran.task.data.model.HoldingDto
 import com.jegatheeswaran.task.data.model.calculatePnl
+import com.jegatheeswaran.task.ui.theme.GREEN50
 import com.jegatheeswaran.task.ui.theme.Gray45
 import com.jegatheeswaran.task.ui.theme.Gray48
 import com.jegatheeswaran.task.ui.theme.Gray70
-import com.jegatheeswaran.task.ui.theme.Rose50
-import com.jegatheeswaran.task.ui.theme.Teal60
+import com.jegatheeswaran.task.ui.theme.RED50
 import com.jegatheeswaran.task.utils.toRupeeString
 
 @Composable
@@ -108,7 +108,7 @@ fun HoldingItem(item: HoldingDto) {
 
             Text(
                 text = item.calculatePnl().first,
-                color = if(item.calculatePnl().second ) Teal60 else Rose50,
+                color = if(item.calculatePnl().second) GREEN50 else RED50,
                 fontSize = 14.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

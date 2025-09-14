@@ -1,6 +1,5 @@
-package com.jegatheeswaran.task.ui.screens
+package com.jegatheeswaran.task.ui.screens.home
 
-import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.Icon
