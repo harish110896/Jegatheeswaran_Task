@@ -16,14 +16,6 @@ data class HoldingDto(
     val close: Double
 )
 
-//fun HoldingDto.toEntity() = HoldingEntity(
-//    symbol = symbol,
-//    quantity = quantity,
-//    ltp = ltp,
-//    avgPrice = avgPrice,
-//    close = close
-//)
-
 fun HoldingDto.calculatePnl() : Pair<String, Boolean>{
     val pnl = (ltp * quantity) - (close * quantity)
     val positive = pnl >= 0
@@ -61,3 +53,25 @@ fun List<HoldingDto>.calculateTodayPnl() : Pair<String, Boolean>{
     val displayString = todayPnl.toSignedRupeeString(positive)
     return Pair(displayString, positive)
 }
+
+fun List<HoldingDto>.toEntityList(): List<HoldingEntity> =
+    map { dto ->
+        HoldingEntity(
+            symbol = dto.symbol,
+            quantity = dto.quantity,
+            ltp = dto.ltp,
+            avgPrice = dto.avgPrice,
+            close = dto.close
+        )
+    }
+
+fun List<HoldingEntity>.toDtoList(): List<HoldingDto> =
+    map { entity ->
+        HoldingDto(
+            symbol = entity.symbol,
+            quantity = entity.quantity,
+            ltp = entity.ltp,
+            avgPrice = entity.avgPrice,
+            close = entity.close
+        )
+    }

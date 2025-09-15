@@ -1,7 +1,6 @@
-package com.jegatheeswaran.task.data.remote.holding
+package com.jegatheeswaran.task.data.remote
 
 import com.jegatheeswaran.task.data.model.HoldingsResponse
-import com.jegatheeswaran.task.data.remote.ApiConfiguration
 import retrofit2.http.GET
 
 interface HoldingApiService {

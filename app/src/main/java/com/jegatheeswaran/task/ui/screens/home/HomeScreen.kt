@@ -1,13 +1,14 @@
 package com.jegatheeswaran.task.ui.screens.home
 
+import android.os.Build
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -22,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -33,27 +35,27 @@ import androidx.navigation.compose.rememberNavController
 import com.jegatheeswaran.task.R
 import com.jegatheeswaran.task.navigation.NavGraph
 import com.jegatheeswaran.task.navigation.ScreenName
+import com.jegatheeswaran.task.ui.common.CircularIndeterminateProgressBar
 import com.jegatheeswaran.task.ui.common.CustomTopBar
 import com.jegatheeswaran.task.ui.screens.portfolio.HoldingMainViewModel
 import com.jegatheeswaran.task.ui.screens.portfolio.PortfolioSummaryLayout
 import com.jegatheeswaran.task.ui.screens.portfolio.TabLayout
-import com.jegatheeswaran.task.ui.theme.Blue40
 import com.jegatheeswaran.task.utils.HOLDING_TAB
-import com.jegatheeswaran.task.utils.POSITION_TAB
 import com.jegatheeswaran.task.utils.TAB_COUNT
+import com.jegatheeswaran.task.utils.network.ConnectionState
+import com.jegatheeswaran.task.utils.network.connectivityState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
 
-    val viewModel = hiltViewModel<HoldingMainViewModel>()
     val navController = rememberNavController()
-    val isAppBarVisible = remember { mutableStateOf(true) }
+    val topBarVisible = remember { mutableStateOf(true) }
     val pagerState = rememberPagerState(initialPage = HOLDING_TAB) { TAB_COUNT }
     Scaffold(
         topBar = {
-            if (!isAppBarVisible.value) {
-                SearchLayout(isAppBarVisible, viewModel, pagerState.currentPage)
+            if (!topBarVisible.value) {
+                //we can use for search in future
             } else {
                 CustomTopBar(
                     navigationTitle(navController),
@@ -68,39 +70,18 @@ fun HomeScreen() {
         },
         bottomBar = {
             BottomBarLayout(navController)
-
         }
     ) { padding ->
         Box(
             Modifier
                 .padding(padding)
-                .padding(top = 0.dp)
                 .fillMaxWidth()
-                .fillMaxHeight()
                 .background(Color.White)
         ) {
             MainView(
                 navController = navController,
                 pagerState = pagerState
             )
-            if (!isAppBarVisible.value) {
-                val results = when (pagerState.currentPage) {
-                    POSITION_TAB -> {
-
-                    }
-
-                    HOLDING_TAB -> {
-
-                    }
-
-                    else -> null
-                }
-                results?.let {
-//                    SearchScreen(navController, it) {
-//                        isAppBarVisible.value = true
-//                    }
-                }
-            }
         }
     }
 
@@ -113,24 +94,29 @@ fun MainView(
 ) {
     val viewModel = hiltViewModel<HoldingMainViewModel>()
     val uiState by viewModel.uiState.collectAsState()
+    val connection by connectivityState()
+    val isConnected = connection == ConnectionState.Available
     LaunchedEffect(Unit) {
-        viewModel.loadHolding()
+        viewModel.loadHolding(isConnected)
     }
     //todo handle back
     BackHandler(enabled = true) {
 
     }
 
-    ConstraintLayout(modifier = Modifier
-        .fillMaxWidth()
-        .background(color = Color.White)) {
-        val (tabLayout, pager, bottomLayout) = createRefs()
-        TabLayout(navController, pagerState, modifier = Modifier
-            .constrainAs(tabLayout) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-            }
-            .fillMaxWidth())
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Color.White)
+    ) {
+        val (tabLayout, pager, bottomLayout, progressBar) = createRefs()
+        TabLayout(
+            navController, pagerState, modifier = Modifier
+                .constrainAs(tabLayout) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+                .fillMaxWidth())
         HorizontalPager(
             state = pagerState,
             modifier = Modifier
@@ -143,22 +129,24 @@ fun MainView(
         ) {
             NavGraph(navController)
         }
-//        Column(modifier = Modifier.fillMaxWidth().height(48.dp).background(Blue40.copy(alpha = 0.20f)).constrainAs(bottomLayout){
-//            bottom.linkTo(parent.bottom)
-//            start.linkTo(parent.start)
-//        }) {
-//
-//        }
-        Box(
-            Modifier
+        AnimatedVisibility(
+            visible = pagerState.currentPage == HOLDING_TAB, modifier = Modifier
                 .padding(top = 0.dp)
                 .constrainAs(bottomLayout) {
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
-                }
-        ) {
+                }) {
             PortfolioSummaryLayout(items = uiState.holdingResults)
         }
+        CircularIndeterminateProgressBar(
+            modifier = Modifier
+                .padding()
+                .fillMaxSize()
+                .constrainAs(progressBar) {
+                    top.linkTo(pager.top)
+                    start.linkTo(pager.start)
+                }, isDisplayed = uiState.isLoading, 0.1f
+        )
     }
 }
 

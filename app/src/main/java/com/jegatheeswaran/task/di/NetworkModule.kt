@@ -2,7 +2,7 @@ package com.jegatheeswaran.task.di
 
 import com.jegatheeswaran.task.data.remote.ApiConfiguration
 import com.jegatheeswaran.task.data.remote.ApiConfiguration.TIMEOUT_IN_SECONDS
-import com.jegatheeswaran.task.data.remote.holding.HoldingApiService
+import com.jegatheeswaran.task.data.remote.HoldingApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,18 +19,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    /**
-     * Provides BaseUrl as string
-     */
+
     @Singleton
     @Provides
     fun provideBaseURL(): String {
         return ApiConfiguration.BASE_URL
     }
 
-    /**
-     * Provides LoggingInterceptor for api information
-     */
+
     @Singleton
     @Provides
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
@@ -38,9 +34,6 @@ object NetworkModule {
     }
 
 
-    /**
-     * Provides custom OkkHttp
-     */
     @Singleton
     @Provides
     fun provideOkHttpClient(
@@ -53,7 +46,6 @@ object NetworkModule {
         okHttpClient.readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
         okHttpClient.writeTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
         okHttpClient.addInterceptor(loggingInterceptor)
-//        okHttpClient.addInterceptor(apiKeyInterceptor)
         okHttpClient.build()
         return okHttpClient.build()
     }

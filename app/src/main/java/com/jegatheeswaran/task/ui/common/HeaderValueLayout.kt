@@ -51,11 +51,20 @@ fun HeaderValueLayout(
     ) {
         val (header, headerIcon, value) = createRefs()
         Row(
-            modifier = Modifier.constrainAs(header) {
-                start.linkTo(parent.start)
-                bottom.linkTo(parent.bottom)
-                width = Dimension.wrapContent
-            },
+            modifier = Modifier
+                .clickable(
+                    enabled = true, onClick = {
+                        onHeaderClick()
+                        if (headerToggleIconResource != null) {
+                            isIconToggle = !isIconToggle
+                        }
+                    }, indication = null, onClickLabel = null, role = null, interactionSource = null
+                )
+                .constrainAs(header) {
+                    start.linkTo(parent.start)
+                    bottom.linkTo(parent.bottom)
+                    width = Dimension.wrapContent
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -63,34 +72,19 @@ fun HeaderValueLayout(
                 color = Gray31,
                 style = MaterialTheme.typography.titleSmall,
                 maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .clickable(enabled = true) {
-                        onHeaderClick
-                        if (headerToggleIconResource != null) {
-                            isIconToggle = !isIconToggle
-                        }
-                    })
+                overflow = TextOverflow.Ellipsis
+            )
             AnimatedVisibility(headerDefaultIconResource != null) {
-                IconButton(
-                    onClick = {
-                        onHeaderClick
-                        if (headerToggleIconResource != null) {
-                            isIconToggle = !isIconToggle
-                        }
-                    }, modifier = Modifier
-                        .width(24.dp)
-                        .height(24.dp)) {
-                    Icon(
-                        painter =
-                            if (isIconToggle) painterResource(headerToggleIconResource!!)
-                            else painterResource(
-                                headerDefaultIconResource!!
-                            ),
-                        contentDescription = "Header Icon",
-                        tint = Gray31
-                    )
-                }
+                Icon(
+                    modifier = Modifier.height(24.dp).width(24.dp),
+                    painter =
+                        if (isIconToggle) painterResource(headerToggleIconResource!!)
+                        else painterResource(
+                            headerDefaultIconResource!!
+                        ),
+                    contentDescription = "Header Icon",
+                    tint = Gray31
+                )
             }
 
         }

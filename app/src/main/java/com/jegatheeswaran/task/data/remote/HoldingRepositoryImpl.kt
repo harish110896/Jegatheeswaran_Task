@@ -1,4 +1,4 @@
-package com.jegatheeswaran.task.data.remote.holding
+package com.jegatheeswaran.task.data.remote
 
 import com.jegatheeswaran.task.data.model.HoldingDto
 import com.jegatheeswaran.task.utils.network.ApiResponseState

@@ -1,5 +1,7 @@
 package com.jegatheeswaran.task.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
@@ -24,20 +26,4 @@ fun NavGraph(
             HoldingMainScreen()
         }
     }
-}
-
-@Composable
-fun navigationTitle(navController: NavController): String {
-    return when (currentRoute(navController)) {
-        ScreenName.Portfolio.route -> stringResource(id = R.string.portfolio)
-        else -> {
-            stringResource(R.string.app_name)
-        }
-    }
-}
-
-@Composable
-fun currentRoute(navController: NavController): String? {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    return navBackStackEntry?.destination?.route?.substringBeforeLast("/")
 }

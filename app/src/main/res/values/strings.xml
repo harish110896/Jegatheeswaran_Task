@@ -16,4 +16,5 @@
     <string name="current_value_header">Current Value</string>
     <string name="total_investment_header">Total Investment</string>
     <string name="today_s_profit_loss_header"><![CDATA[Today\'s  Profit & Loss]]></string>
+    <string name="no_internet_fetch_from_local_data">No Internet. Fetch from local data</string>
 </resources>

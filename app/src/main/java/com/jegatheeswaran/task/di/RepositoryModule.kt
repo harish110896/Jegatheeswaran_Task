@@ -1,8 +1,8 @@
 package com.jegatheeswaran.task.di
 
-import com.jegatheeswaran.task.data.remote.holding.HoldingApiService
-import com.jegatheeswaran.task.data.remote.holding.HoldingRepository
-import com.jegatheeswaran.task.data.remote.holding.HoldingRepositoryImpl
+import com.jegatheeswaran.task.data.remote.HoldingApiService
+import com.jegatheeswaran.task.data.remote.HoldingRepository
+import com.jegatheeswaran.task.data.remote.HoldingRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
