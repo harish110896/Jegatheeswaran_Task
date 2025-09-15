@@ -17,7 +17,7 @@ import javax.inject.Singleton
 object DataBaseModule {
     @Provides
     @Singleton
-    fun provideMovieDatabase(@ApplicationContext context: Context): HoldingDatabase {
+    fun provideHoldingDatabase(@ApplicationContext context: Context): HoldingDatabase {
         return Room.databaseBuilder(
             context,
             HoldingDatabase::class.java,

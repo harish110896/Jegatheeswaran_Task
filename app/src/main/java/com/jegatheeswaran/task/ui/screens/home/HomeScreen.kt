@@ -99,7 +99,6 @@ fun MainView(
     LaunchedEffect(Unit) {
         viewModel.loadHolding(isConnected)
     }
-    //todo handle back
     BackHandler(enabled = true) {
 
     }
